@@ -1,6 +1,5 @@
-import { useReducer } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useReducer , useEffect, useState} from 'react'
+import axios from 'axios';
 import './App.css'
 
 const reducer = (state, Action ) => {
@@ -13,14 +12,25 @@ const reducer = (state, Action ) => {
 }
 
 function App() {
+  // const [state, dispatch] = useReducer(reducer,{count:0 , showText:false})
+  const [data, setData] = useState('');
+  const [count , setCount] = useState(0)
 
-  const [state, dispatch] = useReducer(reducer,{count:0 , showText:false})
+  useEffect(() => {
+    console.log('useEffect')
+    axios.get('https://api.publicapis.org/entries').then((response) => {
+      // console.log(response.data.entries[0].Description)
+      console.log('api was called')
+      setData(response.data.entries[0].Description)
+    })
+},[count])
+
   // const triggerCounter = () => setCount(prevState => prevState + 1)
   return (
     <>
-      {state.count}<div>
-        <button onClick={()=>dispatch({type:'INCREMENT'})}>Click here</button>
-      </div>
+      <div>{count}</div>
+      <div>Hello world {data}</div>
+      <button onClick={()=>setCount(count + 1)}> counter</button>
     </>
   )
 }
