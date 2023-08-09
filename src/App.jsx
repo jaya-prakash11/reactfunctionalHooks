@@ -1,17 +1,20 @@
-import { useEffect, useState, useRef, createContext} from 'react'
+import { useEffect, useState, useRef, createContext, useMemo, useCallback} from 'react'
 import './App.css'
-import User from './user';
-import Login from './login';
+import Child from './child';
 
-export const AppContex =createContext(null)
 function App() {
-  const [userName , setUserName] = useState('')
+  const [data, setData] = useState('hi this is jikihjijii');
+  const [toggle, setToggle] = useState(false)
+  const nameFunction = useCallback((res) => {
+    return data + res;
+  },[data])
   
   return (
-    <AppContex.Provider value={{ userName, setUserName }}>
-      <User></User>
-      <Login></Login>
-    </AppContex.Provider>
+    <div style={{display:'flex', flexDirection:'column', gap:'32px'}}>
+      <Child name={nameFunction}></Child>
+      <button onClick={() => setToggle(prev => !prev)}>Toggle</button>
+      {toggle ? 'Toggle':null}
+   </div>
   )
 }
 
